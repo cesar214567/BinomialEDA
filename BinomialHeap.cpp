@@ -80,10 +80,12 @@ public:
     }
 
     void deleteMin(){
-        heap.erase(min->grade);
+        print();
         for(auto it:min->children){
             this->insert(it);
+            print();
         }
+        heap.erase(min->grade);
         
     }
 
@@ -111,14 +113,23 @@ public:
 
     void omegaprint(){
         cont=0;
-        fstream output("graphviz2");
-        output.open();
-        output<<"subgraph cluster38"<<endl;
-        output<<"{"<<endl;
-        output<<"label=\"besto trabajo ever\""<<endl;
-
-                
-
+        fstream output("graphviz2.dot", ios::out | ios::trunc);
+        output << "graph \"\"" << endl;
+        output << "{" << endl;
+        output << "label=\"besto trabajo ever\"" << endl;
+        int cnt=0;
+        for(int i=0; i<=grade; i++){
+            auto ptr = heap.find(i);
+            if(ptr == heap.end()) continue;
+            output << "subgraph cluster" << cnt << endl;
+            output << "{" << endl;
+            output << "label=\"Grado: " << i << "\"" << endl;
+            output << "n" << cnt << " ;"<< endl;
+            ptr->second->omegaprint(output,cnt);
+            cnt++;
+            output << "}" << endl;
+        }
+        output << "}" << endl;
     }
 
 };

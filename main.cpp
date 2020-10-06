@@ -25,4 +25,5 @@ int main(){
     variable.print();   
     cout<<endl; 
 
+    variable.omegaprint();
 }

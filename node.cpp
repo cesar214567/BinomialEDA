@@ -1,5 +1,6 @@
 #include <vector> 
 #include <iostream>
+#include <fstream>
 int cont =0;
 
 using namespace std;
@@ -19,7 +20,6 @@ struct NodeB{
         cout<<key<<" ";
         
     }
-    
     
     void decreaseKey(){
         if(parent==nullptr)return;
@@ -42,12 +42,13 @@ struct NodeB{
         
     }
 
-    void omegaprint(){
-        void print(){
-            for(auto it:children){
-                it->print();
-            }
-            cout<<key<<" ";
+    void omegaprint(fstream& out, int &cnt){
+        int p = cnt;
+        out << "n" << p << " [label=\"" << key << "\"] ;" << endl;
+        for(auto it:children){
+            cnt++;
+            out << "n" << p << " -- n" << ++cnt << " ;" << endl;
+            it->omegaprint(out, cnt);
         }
     }
 };
