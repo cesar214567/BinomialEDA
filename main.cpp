@@ -5,13 +5,13 @@ int main(){
     BinomialHeap<int> variable;
     int stop=rand()%10;
     int to_change;
-    for(int i=0;i<10;i++){
+    for(int i=0;i<100;i++){
         int temp=rand()%10;
         if(i==stop){
             to_change=temp;
         }
-        variable.insert(temp);
         cout<<temp<<" ";
+        variable.insert(temp);
     }
     cout<<endl;
     variable.print();

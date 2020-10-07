@@ -7,19 +7,19 @@ class BinomialHeap{
     int size=0;
     int grade=0;
     multimap<int,NodeB<T>*> heap;
-    NodeB<T>* min;
+    NodeB<T>* min=nullptr;
     
     NodeB<T>* unir(NodeB<T>* a,NodeB<T>* b){
-        if(a->grade== grade){
+        if(a->grade==grade){
             grade++;
         }
         if(a->key<b->key){
             a->children.push_back(b);
             b->parent=a;
             a->grade++;
-            
             return a;
         }else{
+            if(a == min) min = b;
             b->children.push_back(a);
             a->parent=b;
             b->grade++;
@@ -43,7 +43,7 @@ class BinomialHeap{
     }
 
     void insert(NodeB<T>* elem){
-        if(size==0 or min->key>elem->key){
+        if(min==nullptr or min->key>elem->key){
             min=elem;
         }
         heap.insert({elem->grade,elem});
@@ -55,8 +55,9 @@ class BinomialHeap{
         NodeB<T>* retorno=new NodeB<T>(INT_MAX);
         for(int i=0; i<=grade; i++){
             auto itr = heap.find(i);
-            if(retorno->key > (*itr)->key){
-                retorno = *itr;
+            if(itr == heap.end()) continue;
+            if(retorno->key > itr->second->key){
+                retorno = itr->second;
             }
         } 
         return retorno;
@@ -80,13 +81,11 @@ public:
     }
 
     void deleteMin(){
-        print();
+        heap.erase(min->grade);
         for(auto it:min->children){
             this->insert(it);
-            print();
         }
-        heap.erase(min->grade);
-        
+        min = findMin();
     }
 
     void decreaseKey(T from, T to){
@@ -105,7 +104,6 @@ public:
 
     void print(){
         for(auto it:heap){
-            //cout<<"grado: "<<it.second->grade<<endl;
             it.second->print();
             cout<<endl;
         }
